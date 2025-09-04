@@ -32,7 +32,7 @@
         "typescript"
     ],
     "author": "Google Docs MCP Team",
-    "license": "MIT",
+    "license": "Apache-2.0",
     "repository": {
         "type": "git",
         "url": "https://github.com/olpetit/gdocs-mcp.git"
