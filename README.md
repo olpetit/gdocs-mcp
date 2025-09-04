@@ -9,22 +9,20 @@ A comprehensive Model Context Protocol (MCP) server that provides professional-g
 - **Advanced Reading**: Support for text, JSON, and Markdown output formats
 - **Content Manipulation**: Insert, delete, and modify text at specific positions
 
-### Professional Document Creation
-- **Image Integration**: Insert images with size control and alignment
-- **Table of Contents**: Automatic generation from document headings
-- **Headers & Footers**: Professional document layout with page numbering
-- **PDF Export**: High-quality document export with customizable options
-
 ### Advanced Formatting
 - **Text Styling**: Bold, italic, underline, strikethrough, colors, fonts, links
 - **Paragraph Styling**: Headings, alignment, indentation, spacing
 - **List Management**: Bullet points, numbered lists, alphabetical, Roman numerals
-- **Table Operations**: Create, format, and populate tables with data
 
 ### Content Structure
 - **Page Breaks**: Insert page breaks for document structure
 - **Content Ranges**: Precise text selection and manipulation
 - **Professional Templates**: Pre-configured prompts for common document types
+
+### Smart Prompts
+- **Document Creation**: Intelligent prompts for creating various document types
+- **Document Analysis**: Analyze existing documents for content and structure
+- **Document Formatting**: Apply professional formatting styles automatically
 
 ## 📁 Project Structure
 
@@ -40,7 +38,6 @@ src/
 └── tools/                 # Tool implementations organized by category
     ├── index.ts           # Central tool registration
     ├── basic-tools.ts     # Core document CRUD operations
-    ├── table-tools.ts     # Table creation and manipulation
     ├── formatting-tools.ts # Text and paragraph formatting
     └── content-tools.ts   # Content manipulation and structure
 ```
@@ -63,8 +60,8 @@ src/
 ### 1. Clone and Install
 
 ```bash
-git clone https://github.com/your-org/mcp-google-docs.git
-cd mcp-google-docs
+git clone https://github.com/olpetit/gdocs-mcp.git
+cd gdocs-mcp
 npm install
 ```
 
@@ -114,69 +111,68 @@ npm run dev
 - `update-doc` - Update existing documents (append or replace)
 - `search-docs` - Search documents by content
 - `delete-doc` - Delete documents
-- `read-doc-advanced` - Read documents in multiple formats
-
-### Table Operations
-- `insert-table` - Create empty tables
-- `update-table-cell` - Modify specific table cells
-- `create-formatted-table` - Create tables with headers and data
+- `read-doc-advanced` - Read documents in multiple formats (text, JSON, markdown)
 
 ### Formatting Tools
-- `apply-text-style` - Apply text formatting (bold, italic, colors, etc.)
-- `apply-paragraph-style` - Apply paragraph formatting (headings, alignment)
-- `apply-list-style` - Convert text to various list formats
-
+- `apply-text-style` - Apply text formatting (bold, italic, colors, fonts, links)
+- `apply-paragraph-style` - Apply paragraph formatting (headings, alignment, indentation)
+- `apply-list-style` - Convert text to various list formats (bullet, numbered, alpha, roman)
 
 ### Content Manipulation
 - `insert-text-at-index` - Insert text at specific positions
 - `delete-range` - Delete specific text ranges
 - `insert-page-break` - Insert page breaks
+- `list-comments` - List comments from documents (API limitation noted)
+- `add-comment` - Add comments to documents (API limitation noted)
+
+## 🎯 Available Prompts
+
+### Document Creation
+- `create-document` - Intelligent document creation with customizable parameters:
+  - Document type (report, letter, memo, proposal, etc.)
+  - Writing style (formal, casual, academic, professional)
+  - Target audience specification
+  - Table of contents inclusion
+  - Automatic formatting application
+
+### Document Analysis
+- `analyze-doc` - Analyze existing documents for:
+  - Content summary and structure
+  - Key points identification
+  - Improvement suggestions
+
+### Document Formatting
+- `format-document` - Apply professional formatting styles:
+  - Academic, business, creative, or technical styles
+  - Automatic markdown cleanup
+  - Native Google Docs formatting application
 
 ## 🎯 Usage Examples
 
-### Creating a Professional Report
+### Creating a Professional Document
 
 ```typescript
-// 1. Create document
+// 1. Create document with initial content
 await createDoc({
   title: "Q4 Business Report",
-  content: "Executive Summary\n\nThis report covers..."
+  content: "Executive Summary\n\nThis report covers our Q4 performance..."
 });
 
-// 2. Add table of contents
-await createTableOfContents({
+// 2. Add more content at specific position
+await insertTextAtIndex({
   docId: "document_id",
-  title: "Table of Contents",
-  includePageNumbers: true
+  textToInsert: "\n\nKey Findings:\n",
+  index: 50
 });
 
-// 3. Add headers and footers
-await createHeaderFooter({
-  docId: "document_id",
-  headerText: "Q4 Business Report",
-  footerText: "Confidential",
-  includePageNumbers: true
-});
-
-// 4. Export to PDF
-await exportToPdf({
-  docId: "document_id",
-  outputPath: "./reports/q4-report.pdf",
-  quality: "HIGH"
-});
-```
-
-### Formatting a Document
-
-```typescript
-// Apply heading styles
+// 3. Apply heading styles
 await applyParagraphStyle({
   docId: "document_id",
-  textToFind: "Introduction",
+  textToFind: "Executive Summary",
   namedStyleType: "HEADING_1"
 });
 
-// Format text
+// 4. Format important text
 await applyTextStyle({
   docId: "document_id",
   textToFind: "Important Note",
@@ -184,12 +180,44 @@ await applyTextStyle({
   foregroundColor: "#FF0000"
 });
 
-// Create a list
+// 5. Create a numbered list
 await applyListStyle({
   docId: "document_id",
   textToFind: "Key Points",
   listType: "NUMBERED",
   indentLevel: 1
+});
+
+// 6. Insert page break
+await insertPageBreak({
+  docId: "document_id",
+  index: 200
+});
+```
+
+### Using Smart Prompts
+
+```typescript
+// Create a document using the intelligent prompt
+await createDocument({
+  title: "Project Proposal",
+  content: "We need to develop a new mobile application for customer management",
+  documentType: "proposal",
+  style: "professional",
+  audience: "executive team",
+  includeTOC: "true"
+});
+
+// Analyze an existing document
+await analyzeDoc({
+  docId: "existing_document_id"
+});
+
+// Format a document with professional styling
+await formatDocument({
+  docId: "document_id",
+  formattingStyle: "business",
+  includeElements: "table of contents, headers"
 });
 ```
 
@@ -255,9 +283,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-- **Issues**: [GitHub Issues](https://github.com/your-org/mcp-google-docs/issues)
-- **Documentation**: [Project Wiki](https://github.com/your-org/mcp-google-docs/wiki)
-- **Discussions**: [GitHub Discussions](https://github.com/your-org/mcp-google-docs/discussions)
+- **Issues**: [GitHub Issues](https://github.com/olpetit/gdocs-mcp/issues)
+- **Documentation**: [Project Wiki](https://github.com/olpetit/gdocs-mcp/wiki)
+- **Discussions**: [GitHub Discussions](https://github.com/olpetit/gdocs-mcp/discussions)
 
 ---
 
